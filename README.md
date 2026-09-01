@@ -14,6 +14,8 @@ Scaffold only. Commands appear in the Command Palette and return "This command i
 
 See [docs/PDR.md](docs/PDR.md).
 
+Development details: [docs/development.md](docs/development.md). Publishing: [docs/publishing.md](docs/publishing.md).
+
 ## Development
 
 Package manager is pnpm. Do not switch to npm or yarn.
