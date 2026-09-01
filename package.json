@@ -1,0 +1,89 @@
+{
+  "name": "code-annotations",
+  "displayName": "Annotations",
+  "description": "Find and navigate TODO, FIXME, HACK, NOTE, and REVIEW markers.",
+  "version": "0.0.1",
+  "packageManager": "pnpm@12.1.0",
+  "publisher": "gvastethecreator",
+  "author": {
+    "name": "gvastethecreator"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gvastethecreator/code-annotations.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gvastethecreator/code-annotations/issues"
+  },
+  "homepage": "https://github.com/gvastethecreator/code-annotations#readme",
+  "keywords": [
+    "todo",
+    "fixme",
+    "annotations",
+    "comments"
+  ],
+  "engines": {
+    "vscode": "^1.134.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "capabilities": {
+    "virtualWorkspaces": {
+      "supported": true
+    },
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "annotations.refreshWorkspace",
+        "title": "Refresh Workspace",
+        "category": "Annotations"
+      },
+      {
+        "command": "annotations.showAll",
+        "title": "Show All",
+        "category": "Annotations"
+      },
+      {
+        "command": "annotations.filterTokens",
+        "title": "Filter Tokens...",
+        "category": "Annotations"
+      },
+      {
+        "command": "annotations.next",
+        "title": "Next Annotation",
+        "category": "Annotations"
+      },
+      {
+        "command": "annotations.previous",
+        "title": "Previous Annotation",
+        "category": "Annotations"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "tsc --noEmit && node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "tsc --noEmit && node esbuild.js --production",
+    "vsix": "pnpm run package && vsce package --no-dependencies",
+    "check-types": "tsc --noEmit",
+    "test": "node --test --experimental-strip-types src/**/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "@types/vscode": "^1.134.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}
