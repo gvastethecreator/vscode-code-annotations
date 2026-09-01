@@ -1,41 +1,31 @@
+<div align="center">
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations"><img src="media/icon.png" alt="Annotations" width="128" /></a>
+
 # Annotations
 
-Decorate TODO, FIXME, HACK, NOTE, REVIEW, and DEPRECATED markers and list them in a tree.
+**See every TODO and FIXME without leaving the editor**
 
-This repository is private and unpublished. Do not publish a VSIX until the product PDR v1 list is complete.
+<p align="center">
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations"><img alt="GitHub" src="https://shieldcn.dev/badge/github.png?variant=outline&size=xs&theme=blue&logo=github" /></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://shieldcn.dev/github/license/gvastethecreator/vscode-code-annotations.png?variant=outline&size=xs" /></a>
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations/actions/workflows/ci.yml"><img alt="CI status" src="https://shieldcn.dev/github/ci/gvastethecreator/vscode-code-annotations.png?workflow=ci.yml&branch=main&variant=outline&size=xs" /></a>
+</p>
+</div>
 
-Extension id: `gvastethecreator.code-annotations`.
+---
 
-## Status
+### Getting started
 
-Scaffold only. Commands appear in the Command Palette and return "This command is not implemented yet."
+1) Clone [gvastethecreator/vscode-code-annotations](https://github.com/gvastethecreator/vscode-code-annotations), then run `pnpm install`.
+2) Press F5 (`Run Extension`).
+3) Open a file that contains `TODO` comments.
 
-## Product contract
+<img src="media/preview.png" alt="Preview" width="100%" />
 
-See [docs/PDR.md](docs/PDR.md).
+---
 
-Development details: [docs/development.md](docs/development.md). Publishing: [docs/publishing.md](docs/publishing.md).
-
-## Development
-
-Package manager is pnpm. Do not switch to npm or yarn.
-
-| Command | What it does |
-| --- | --- |
-| `pnpm install` | Install dependencies |
-| `pnpm test` | Node test runner on `src/**/*.test.ts` |
-| `pnpm run check-types` | `tsc --noEmit` |
-| `pnpm run compile` | Types then esbuild |
-| `pnpm run watch` | esbuild watch |
-| `pnpm run package` | Production bundle |
-| `pnpm run vsix` | Production bundle + VSIX |
-
-F5 (`Run Extension`) compiles, then opens `test-workspace/`.
-
-## Privacy
-
-No telemetry. No network. File contents stay on this machine.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+<p align="center">
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations/stargazers"><img alt="GitHub stars" src="https://shieldcn.dev/github/stars/gvastethecreator/vscode-code-annotations.png?variant=outline&size=xs" /></a>
+  <a href="https://github.com/gvastethecreator"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/follow%20me-/gvastethecreator.png?size=xs&amp;logo=github&amp;brand=github&amp;mode=dark"><img alt="Follow gvastethecreator" src="https://shieldcn.dev/badge/follow%20me-/gvastethecreator.png?size=xs&amp;logo=github&amp;brand=github&amp;mode=light"></picture></a>
+  <a href="https://github.com/sponsors/gvastethecreator"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/support%20this-project.png?size=xs&amp;logo=ri%3APiHeartFill&amp;logoColor=b85a90&amp;brand=github&amp;mode=dark"><img alt="Support this project" src="https://shieldcn.dev/badge/support%20this-project.png?size=xs&amp;logo=ri%3APiHeartFill&amp;logoColor=b85a90&amp;brand=github&amp;mode=light"></picture></a>
+</p>
