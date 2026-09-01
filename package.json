@@ -14,12 +14,12 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/gvastethecreator/code-annotations.git"
+    "url": "https://github.com/gvastethecreator/vscode-code-annotations.git"
   },
   "bugs": {
-    "url": "https://github.com/gvastethecreator/code-annotations/issues"
+    "url": "https://github.com/gvastethecreator/vscode-code-annotations/issues"
   },
-  "homepage": "https://github.com/gvastethecreator/code-annotations#readme",
+  "homepage": "https://github.com/gvastethecreator/vscode-code-annotations#readme",
   "keywords": [
     "todo",
     "fixme",

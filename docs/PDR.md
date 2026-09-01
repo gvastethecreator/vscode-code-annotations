@@ -1,5 +1,5 @@
-Repo: `X:\vscode-extensions\code-annotations`
-Remote: private (`gvastethecreator/code-annotations`)
+Repo: `X:\vscode-extensions\vscode-code-annotations`
+Remote: private (`gvastethecreator/vscode-code-annotations`)
 
 # PDR — Annotations
 
