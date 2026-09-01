@@ -9,7 +9,7 @@ Package manager is pnpm (`packageManager: pnpm@12.1.0`). Do not switch to npm or
 | `pnpm install` | Install deps from `pnpm-lock.yaml` |
 | `pnpm test` | Node test runner on `src/**/*.test.ts` |
 | `pnpm run check-types` | `tsc --noEmit` |
-| `pnpm run compile` | Types then esbuild → `dist/extension.js` |
+| `pnpm run compile` | Types then `esbuild.cjs` → `dist/extension.js` |
 | `pnpm run watch` | esbuild watch |
 | `pnpm run package` | Production bundle |
 | `pnpm run vsix` | Production bundle + `vsce package --no-dependencies` |

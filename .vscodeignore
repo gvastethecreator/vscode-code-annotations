@@ -13,7 +13,7 @@ docs/**
 pnpm-lock.yaml
 pnpm-workspace.yaml
 tsconfig.json
-esbuild.js
+esbuild.cjs
 AGENTS.md
 SECURITY.md
 **/*.map

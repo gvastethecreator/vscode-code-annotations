@@ -9,6 +9,7 @@
     "name": "gvastethecreator"
   },
   "license": "MIT",
+  "type": "module",
   "icon": "media/icon.png",
   "private": true,
   "repository": {
@@ -72,9 +73,9 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
-    "compile": "tsc --noEmit && node esbuild.js",
-    "watch": "node esbuild.js --watch",
-    "package": "tsc --noEmit && node esbuild.js --production",
+    "compile": "tsc --noEmit && node esbuild.cjs",
+    "watch": "node esbuild.cjs --watch",
+    "package": "tsc --noEmit && node esbuild.cjs --production",
     "vsix": "pnpm run package && vsce package --no-dependencies",
     "check-types": "tsc --noEmit",
     "test": "node --test --experimental-strip-types src/**/*.test.ts"
