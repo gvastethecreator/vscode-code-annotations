@@ -1,10 +1,13 @@
 # Code Annotations — Complete delivery plan
 
-Status: execution specification  
-Repository: `gvastethecreator/vscode-code-annotations`  
-Product phase: scaffold  
-First public target: `0.1.0`  
-Last reviewed: 2026-09-01
+Status: implemented release-candidate specification
+
+Repository: `gvastethecreator/vscode-code-annotations`
+
+Product phase: `0.1.0` release candidate
+
+First public target: `0.1.0`
+Last reviewed: 2026-09-02
 
 This document converts `docs/PDR.md` into an implementation-ready specification and ordered ticket backlog. It defines the minimum reliable product, scanning limits, compatibility contract, accessibility requirements, and launch gates.
 
@@ -12,25 +15,16 @@ This document converts `docs/PDR.md` into an implementation-ready specification 
 
 ## 1. Current state
 
-The repository has a consistent scaffold:
+The `0.1.0` release candidate implements this specification:
 
-- strict TypeScript, esbuild, pnpm, and CI;
-- five contributed commands;
-- PDR, security/development/publishing notes, agent guidance, icon, and preview;
-- declared Virtual Workspace and Restricted Mode support.
+- pure comment adapters, literal matcher, binary guard, validated configuration, and deterministic in-memory index;
+- token-only decorations and a native Explorer Tree View with filtering and navigation;
+- lazy bounded scanning, cancellation, open-document authority, and incremental file events;
+- explicit Node and browser bundles for desktop, web, virtual, remote, and Restricted Mode hosts;
+- unit, performance, desktop, web, packaged-VSIX, package-content, and media gates;
+- direct native-alpha Imagegen icon source and preview capture from the installed VSIX.
 
-The product itself is not implemented:
-
-- every command reaches the shared placeholder handler;
-- the only test verifies the Node test runner;
-- no annotation model, matcher, editor decorations, scanner, index, file watcher, Tree View, configuration, theme colors, navigation, or filtering exists;
-- no browser entry or web-host test exists;
-- no Extension Host integration tests or packaged VSIX smoke test exists;
-- the package declares ESM while esbuild emits a CommonJS `.js` artifact;
-- the display name is the generic `Annotations`, while the repository and package use `code-annotations`;
-- command IDs currently use the broad `annotations.*` namespace.
-
-The first release must be intentionally conservative. The differentiator is not “color TODO comments”; it is a dependable, bounded, navigable index that does not punish large workspaces.
+Publication, tagging, release creation, and post-publication verification remain outside this implementation and require explicit human approval.
 
 ---
 
@@ -38,7 +32,7 @@ The first release must be intentionally conservative. The differentiator is not 
 
 Before publication, use one coherent public identity:
 
-- recommended display name: **Code Annotations**;
+- display name: **Code Annotations: TODO Index**, because **Code Annotations** is already used by another Marketplace publisher;
 - Marketplace package name: `code-annotations`, subject to final collision check;
 - command namespace: `codeAnnotations.*`;
 - view ID: `codeAnnotations.workspace`;
@@ -544,7 +538,7 @@ Annotation messages may contain secrets. The Tree View necessarily displays them
 
 ## 14. Ordered ticket backlog
 
-Use these IDs in GitHub Issues, branches, commits, and PR descriptions.
+These IDs remain the traceable implementation specification. ANN-001 through ANN-029 are implemented in the release candidate. ANN-030 remains pending explicit publication authorization.
 
 ### Identity and foundation
 
