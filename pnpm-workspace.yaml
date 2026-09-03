@@ -1,4 +1,6 @@
 allowBuilds:
   esbuild: true
+  sharp: true
+  "@playwright/browser-chromium": true
   "@vscode/vsce-sign": false
   keytar: false
