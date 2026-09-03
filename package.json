@@ -1,8 +1,8 @@
 {
   "name": "code-annotations",
-  "displayName": "Annotations",
-  "description": "Find and navigate TODO, FIXME, HACK, NOTE, and REVIEW markers.",
-  "version": "0.0.1",
+  "displayName": "Code Annotations: TODO Index",
+  "description": "Highlight and navigate TODO, FIXME, HACK, NOTE, REVIEW, and custom comment markers.",
+  "version": "0.1.0",
   "packageManager": "pnpm@12.1.0",
   "publisher": "gvastethecreator",
   "author": {
@@ -12,6 +12,11 @@
   "type": "module",
   "icon": "media/icon.png",
   "private": true,
+  "pricing": "Free",
+  "galleryBanner": {
+    "color": "#17191f",
+    "theme": "dark"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/gvastethecreator/vscode-code-annotations.git"
@@ -24,7 +29,8 @@
     "todo",
     "fixme",
     "annotations",
-    "comments"
+    "comments",
+    "navigation"
   ],
   "engines": {
     "vscode": "^1.134.0"
@@ -32,8 +38,43 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onLanguage:html",
+    "onLanguage:xml",
+    "onLanguage:css",
+    "onLanguage:scss",
+    "onLanguage:less",
+    "onLanguage:python",
+    "onLanguage:shellscript",
+    "onLanguage:markdown",
+    "onLanguage:mdx",
+    "onLanguage:yaml",
+    "onLanguage:toml",
+    "onLanguage:ruby",
+    "onLanguage:php",
+    "onLanguage:powershell"
+  ],
+  "main": "./dist/node/extension.cjs",
+  "browser": "./dist/web/extension.cjs",
+  "extensionKind": [
+    "workspace",
+    "ui"
+  ],
+  "files": [
+    "dist/node/extension.cjs",
+    "dist/web/extension.cjs",
+    "media/icon.png",
+    "media/preview.png",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
   "capabilities": {
     "virtualWorkspaces": {
       "supported": true
@@ -45,29 +86,208 @@
   "contributes": {
     "commands": [
       {
-        "command": "annotations.refreshWorkspace",
+        "command": "codeAnnotations.refreshWorkspace",
         "title": "Refresh Workspace",
-        "category": "Annotations"
+        "category": "Code Annotations"
       },
       {
-        "command": "annotations.showAll",
+        "command": "codeAnnotations.showAll",
         "title": "Show All",
-        "category": "Annotations"
+        "category": "Code Annotations"
       },
       {
-        "command": "annotations.filterTokens",
+        "command": "codeAnnotations.filterTokens",
         "title": "Filter Tokens...",
-        "category": "Annotations"
+        "category": "Code Annotations"
       },
       {
-        "command": "annotations.next",
+        "command": "codeAnnotations.clearFilter",
+        "title": "Clear Filter",
+        "category": "Code Annotations"
+      },
+      {
+        "command": "codeAnnotations.next",
         "title": "Next Annotation",
-        "category": "Annotations"
+        "category": "Code Annotations"
       },
       {
-        "command": "annotations.previous",
+        "command": "codeAnnotations.previous",
         "title": "Previous Annotation",
-        "category": "Annotations"
+        "category": "Code Annotations"
+      }
+    ],
+    "configuration": {
+      "title": "Code Annotations",
+      "properties": {
+        "codeAnnotations.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Enable editor decorations and workspace annotation features."
+        },
+        "codeAnnotations.tokens": {
+          "type": "array",
+          "default": ["TODO", "FIXME", "HACK", "NOTE", "REVIEW", "DEPRECATED"],
+          "scope": "window",
+          "description": "Literal, whitespace-free comment markers to find.",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^\\S+$"
+          }
+        },
+        "codeAnnotations.caseSensitive": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Match annotation tokens using exact letter case."
+        },
+        "codeAnnotations.decorations.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Decorate matching tokens in visible editors."
+        },
+        "codeAnnotations.scan.include": {
+          "type": "array",
+          "default": ["**/*"],
+          "scope": "window",
+          "description": "Glob patterns included in the workspace index.",
+          "maxItems": 32,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "codeAnnotations.scan.exclude": {
+          "type": "array",
+          "default": [
+            "**/.git/**",
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/out/**",
+            "**/coverage/**",
+            "**/.next/**",
+            "**/.cache/**",
+            "**/vendor/**",
+            "**/*.min.js",
+            "**/*.map"
+          ],
+          "scope": "window",
+          "description": "Glob patterns excluded from the workspace index.",
+          "maxItems": 32,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "codeAnnotations.scan.maxFileSize": {
+          "type": "integer",
+          "default": 1048576,
+          "minimum": 1024,
+          "maximum": 16777216,
+          "scope": "window",
+          "description": "Maximum UTF-8 byte size of a file included in the index."
+        },
+        "codeAnnotations.scan.maxFiles": {
+          "type": "integer",
+          "default": 20000,
+          "minimum": 1,
+          "maximum": 100000,
+          "scope": "window",
+          "description": "Maximum number of workspace files considered by one scan."
+        },
+        "codeAnnotations.scan.maxResults": {
+          "type": "integer",
+          "default": 10000,
+          "minimum": 1,
+          "maximum": 100000,
+          "scope": "window",
+          "description": "Maximum number of annotations retained in the workspace index."
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "codeAnnotations.workspace",
+          "name": "Code Annotations",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "codeAnnotations.workspace",
+        "contents": "Code Annotations is disabled. [Open Settings](command:workbench.action.openSettings)",
+        "when": "!codeAnnotations.enabled"
+      },
+      {
+        "view": "codeAnnotations.workspace",
+        "contents": "Open this view to build the bounded workspace index.\n[Refresh Workspace](command:codeAnnotations.refreshWorkspace)",
+        "when": "codeAnnotations.enabled && !codeAnnotations.hasScanned"
+      },
+      {
+        "view": "codeAnnotations.workspace",
+        "contents": "No annotations match the current workspace and filter.\n[Refresh Workspace](command:codeAnnotations.refreshWorkspace)",
+        "when": "codeAnnotations.enabled && codeAnnotations.hasScanned && !codeAnnotations.hasResults"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "codeAnnotations.refreshWorkspace",
+          "when": "view == codeAnnotations.workspace",
+          "group": "navigation@1"
+        },
+        {
+          "command": "codeAnnotations.filterTokens",
+          "when": "view == codeAnnotations.workspace",
+          "group": "navigation@2"
+        },
+        {
+          "command": "codeAnnotations.clearFilter",
+          "when": "view == codeAnnotations.workspace && codeAnnotations.hasFilter",
+          "group": "navigation@3"
+        }
+      ]
+    },
+    "colors": [
+      {
+        "id": "codeAnnotations.infoForeground",
+        "description": "Code Annotations informational token foreground.",
+        "defaults": { "dark": "#75BEFF", "light": "#005FB8", "highContrast": "#75BEFF", "highContrastLight": "#005FB8" }
+      },
+      {
+        "id": "codeAnnotations.mutedForeground",
+        "description": "Code Annotations muted token foreground.",
+        "defaults": { "dark": "#A7A7A7", "light": "#5C5C5C", "highContrast": "#FFFFFF", "highContrastLight": "#000000" }
+      },
+      {
+        "id": "codeAnnotations.reviewForeground",
+        "description": "Code Annotations review token foreground.",
+        "defaults": { "dark": "#C586C0", "light": "#7A3E9D", "highContrast": "#D9A7E8", "highContrastLight": "#5A1A73" }
+      },
+      {
+        "id": "codeAnnotations.warningForeground",
+        "description": "Code Annotations warning token foreground.",
+        "defaults": { "dark": "#CCA700", "light": "#8A5A00", "highContrast": "#FFD700", "highContrastLight": "#6B4500" }
+      },
+      {
+        "id": "codeAnnotations.errorForeground",
+        "description": "Code Annotations error token foreground.",
+        "defaults": { "dark": "#F14C4C", "light": "#A31515", "highContrast": "#FF8080", "highContrastLight": "#7A0000" }
+      },
+      {
+        "id": "codeAnnotations.deprecatedForeground",
+        "description": "Code Annotations deprecated token foreground.",
+        "defaults": { "dark": "#D19A66", "light": "#8B4513", "highContrast": "#FFD2A6", "highContrastLight": "#6A2C00" }
       }
     ]
   },
@@ -76,15 +296,32 @@
     "compile": "tsc --noEmit && node esbuild.cjs",
     "watch": "node esbuild.cjs --watch",
     "package": "tsc --noEmit && node esbuild.cjs --production",
-    "vsix": "pnpm run package && vsce package --no-dependencies",
+    "vsix": "vsce package --no-dependencies --out code-annotations.vsix",
+    "inspect:vsix": "node scripts/inspect-vsix.mjs code-annotations.vsix",
     "check-types": "tsc --noEmit",
-    "test": "node --test --experimental-strip-types src/**/*.test.ts"
+    "test": "pnpm run test:unit",
+    "test:unit": "node --test --experimental-strip-types src/**/*.test.ts",
+    "test:performance": "node --experimental-strip-types scripts/performance.mjs",
+    "test:integration": "node test/integration/run.mjs",
+    "build:test-web": "node scripts/build-web-tests.mjs",
+    "test:web": "pnpm run build:test-web && node test/web/run.mjs",
+    "test:vsix": "node test/integration/run-vsix.mjs",
+    "quality": "pnpm run test:unit && pnpm run check-types && pnpm run compile && pnpm run test:performance"
+  },
+  "dependencies": {
+    "picomatch": "4.0.7"
   },
   "devDependencies": {
     "@types/node": "^26.4.0",
     "@types/vscode": "^1.134.0",
+    "@types/yauzl": "3.4.0",
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/test-web": "0.0.81",
     "@vscode/vsce": "^3.9.2",
     "esbuild": "^0.28.2",
-    "typescript": "^7.0.2"
+    "playwright": "1.62.1",
+    "sharp": "^0.35.4",
+    "typescript": "^7.0.2",
+    "yauzl": "3.4.0"
   }
 }

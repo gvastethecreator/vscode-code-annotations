@@ -4,18 +4,14 @@ const production = process.argv.includes("--production");
 const watch = process.argv.includes("--watch");
 
 /** @type {import('esbuild').Plugin} */
-const esbuildProblemMatcherPlugin = {
+const problemMatcher = {
   name: "esbuild-problem-matcher",
   setup(build) {
-    build.onStart(() => {
-      console.log("[watch] build started");
-    });
+    build.onStart(() => console.log("[watch] build started"));
     build.onEnd((result) => {
       for (const { text, location } of result.errors) {
         console.error(`✘ [ERROR] ${text}`);
-        if (location) {
-          console.error(`  ${location.file}:${location.line}:${location.column}:`);
-        }
+        if (location) console.error(`  ${location.file}:${location.line}:${location.column}:`);
       }
       console.log("[watch] build finished");
     });
@@ -23,25 +19,29 @@ const esbuildProblemMatcherPlugin = {
 };
 
 async function main() {
-  const ctx = await esbuild.context({
-    entryPoints: ["src/extension.ts"],
-    bundle: true,
-    format: "cjs",
-    minify: production,
-    sourcemap: !production,
-    sourcesContent: false,
-    platform: "node",
-    outfile: "dist/extension.js",
-    external: ["vscode"],
-    logLevel: "silent",
-    plugins: [esbuildProblemMatcherPlugin],
-  });
+  const contexts = await Promise.all(
+    ["dist/node/extension.cjs", "dist/web/extension.cjs"].map((outfile) =>
+      esbuild.context({
+        entryPoints: ["src/extension.ts"],
+        bundle: true,
+        format: "cjs",
+        minify: production,
+        sourcemap: !production,
+        sourcesContent: false,
+        platform: "browser",
+        outfile,
+        external: ["vscode"],
+        logLevel: "silent",
+        plugins: [problemMatcher],
+      }),
+    ),
+  );
   if (watch) {
-    await ctx.watch();
-  } else {
-    await ctx.rebuild();
-    await ctx.dispose();
+    await Promise.all(contexts.map((context) => context.watch()));
+    return;
   }
+  await Promise.all(contexts.map((context) => context.rebuild()));
+  await Promise.all(contexts.map((context) => context.dispose()));
 }
 
 main().catch((error) => {
