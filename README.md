@@ -16,7 +16,7 @@
 
 Code Annotations decorates `TODO`, `FIXME`, `HACK`, `NOTE`, `REVIEW`, and `DEPRECATED` inside comments. Its native Explorer view builds a bounded workspace index only when you open the view or run a workspace command.
 
-<img src="media/preview.png" alt="Code Annotations running in VS Code with highlighted markers and the native Explorer view" width="100%" />
+<img src="media/preview.png" alt="Code Annotations highlighting configured tokens in example TypeScript comments" width="100%" />
 
 ## Features
 

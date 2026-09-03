@@ -77,15 +77,19 @@ for (const bundleName of ["extension/dist/node/extension.cjs", "extension/dist/w
 }
 
 await verifyPng(contents.get("extension/media/icon.png"), 256, 256, "Marketplace icon");
-await verifyPng(contents.get("extension/media/preview.png"), 1200, 800, "Marketplace preview");
+await verifyPng(contents.get("extension/media/preview.png"), undefined, undefined, "Marketplace preview", { minWidth: 640, minHeight: 200, maxWidth: 1200, maxHeight: 800 });
 console.log(`VSIX inspection passed: ${names.size} entries.`);
 
-async function verifyPng(buffer, width, height, label) {
+async function verifyPng(buffer, width, height, label, bounds) {
   const image = sharp(buffer);
   const metadata = await image.metadata();
   assert.equal(metadata.format, "png", `${label} must be PNG.`);
-  assert.equal(metadata.width, width, `${label} width changed.`);
-  assert.equal(metadata.height, height, `${label} height changed.`);
+  if (width !== undefined) assert.equal(metadata.width, width, `${label} width changed.`);
+  if (height !== undefined) assert.equal(metadata.height, height, `${label} height changed.`);
+  if (bounds) {
+    assert.ok(metadata.width >= bounds.minWidth && metadata.width <= bounds.maxWidth, `${label} width must be ${bounds.minWidth}-${bounds.maxWidth}px.`);
+    assert.ok(metadata.height >= bounds.minHeight && metadata.height <= bounds.maxHeight, `${label} height must be ${bounds.minHeight}-${bounds.maxHeight}px.`);
+  }
   assert.equal(metadata.channels, 4, `${label} must carry native alpha.`);
   const { data, info } = await image.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const alpha = info.channels - 1;

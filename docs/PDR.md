@@ -1,6 +1,6 @@
-Repo: `X:\vscode-extensions\vscode-code-annotations`
+Repo: `https://github.com/gvastethecreator/vscode-code-annotations`
 
-Remote: private (`gvastethecreator/vscode-code-annotations`)
+Remote: public (`gvastethecreator/vscode-code-annotations`)
 
 # PDR — Code Annotations: TODO Index
 
@@ -101,7 +101,7 @@ Automated gates cover Linux minimum/Stable/Insiders desktop hosts, Windows and m
 
 ## Assets
 
-`media/source/code-annotations-imagegen.png` is the accepted native-alpha Imagegen source. `media/icon.png` is a direct alpha-preserving 256×256 downsample; no SVG reinterpretation is allowed. `media/preview.png` is a 1200×800 native-alpha capture from the final installed VSIX.
+`media/source/code-annotations-imagegen.png` is the accepted native-alpha Imagegen source. `media/icon.png` is a direct alpha-preserving 256×256 downsample; no SVG reinterpretation is allowed. `media/preview.png` is a tightly cropped native-alpha editor capture from the final installed VSIX, showing the configured annotation tokens on synthetic TypeScript code.
 
 ## Non-goals for 0.1.0
 
