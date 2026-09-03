@@ -47,10 +47,8 @@ async function run() {
   const folder = vscode.workspace.workspaceFolders[0];
   const created = vscode.Uri.joinPath(folder.uri, "src", "000-created.ts");
   await vscode.workspace.fs.writeFile(created, new TextEncoder().encode("// NOTE: Added after the initial scan.\n"));
-  await delay(800);
   await vscode.commands.executeCommand("workbench.action.closeAllEditors");
-  await vscode.commands.executeCommand("codeAnnotations.next");
-  assertSelection("NOTE", "src/000-created.ts");
+  await waitForSelection("codeAnnotations.next", "NOTE", "src/000-created.ts");
   await vscode.workspace.fs.delete(created);
   await delay(800);
   await vscode.commands.executeCommand("workbench.action.closeAllEditors");
@@ -80,6 +78,22 @@ function assertSelection(expected, suffix) {
   assert.ok(editor, "Navigation did not open an editor.");
   assert.ok(editor.document.uri.path.endsWith(suffix), `Unexpected navigation target: ${editor.document.uri.path}`);
   assert.equal(editor.document.getText(editor.selection), expected);
+}
+
+async function waitForSelection(command, expected, suffix, timeout = 5_000) {
+  const deadline = Date.now() + timeout;
+  let lastTarget = "no active editor";
+  while (Date.now() < deadline) {
+    await vscode.commands.executeCommand(command);
+    const editor = vscode.window.activeTextEditor;
+    if (editor) {
+      const selected = editor.document.getText(editor.selection);
+      lastTarget = `${editor.document.uri.path} (${JSON.stringify(selected)})`;
+      if (editor.document.uri.path.endsWith(suffix) && selected === expected) return;
+    }
+    await delay(100);
+  }
+  assert.fail(`Timed out waiting for ${suffix} ${expected}; last target: ${lastTarget}`);
 }
 
 function delay(milliseconds) {
