@@ -306,7 +306,9 @@
     "build:test-web": "node scripts/build-web-tests.mjs",
     "test:web": "pnpm run build:test-web && node test/web/run.mjs",
     "test:vsix": "node test/integration/run-vsix.mjs",
-    "quality": "pnpm run test:unit && pnpm run check-types && pnpm run compile && pnpm run test:performance"
+    "render:media": "node scripts/render-media.mjs",
+    "check:media": "node scripts/check-media.mjs",
+    "quality": "pnpm run test:unit && pnpm run check-types && pnpm run compile && pnpm run test:performance && pnpm run check:media"
   },
   "dependencies": {
     "picomatch": "4.0.7"
