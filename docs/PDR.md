@@ -101,7 +101,7 @@ Automated gates cover Linux minimum/Stable/Insiders desktop hosts, Windows and m
 
 ## Assets
 
-`media/source/code-annotations-imagegen.png` is the accepted native-alpha Imagegen source. `media/icon.png` is a direct alpha-preserving 256×256 downsample; no SVG reinterpretation is allowed. `media/preview.png` is a tightly cropped native-alpha editor capture from the final installed VSIX, showing the configured annotation tokens on synthetic TypeScript code.
+`media/source/code-annotations-imagegen-raw.png` retains the generated aligned icon. `media/source/code-annotations-imagegen.png` is the accepted crisp vectorized-3D native-alpha raster normalized to a thin transparent safety margin. `media/icon.png` is a direct alpha-preserving 256×256 downsample; no SVG reinterpretation is allowed. `media/preview.png` is a tightly cropped native-alpha editor capture from the final installed VSIX, showing the configured annotation tokens on synthetic TypeScript code.
 
 ## Non-goals for 0.1.0
 
