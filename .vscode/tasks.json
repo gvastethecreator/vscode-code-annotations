@@ -5,7 +5,10 @@
       "label": "Watch",
       "type": "shell",
       "command": "pnpm",
-      "args": ["run", "watch"],
+      "args": [
+        "run",
+        "watch"
+      ],
       "group": "build",
       "isBackground": true,
       "problemMatcher": [],
@@ -18,7 +21,9 @@
       "label": "Test",
       "type": "shell",
       "command": "pnpm",
-      "args": ["test"],
+      "args": [
+        "test"
+      ],
       "group": {
         "kind": "test",
         "isDefault": true
@@ -26,39 +31,81 @@
       "problemMatcher": []
     },
     {
+      "label": "Quality",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "quality"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
       "label": "Types",
       "type": "shell",
       "command": "pnpm",
-      "args": ["run", "check-types"],
+      "args": [
+        "run",
+        "check-types"
+      ],
       "group": "test",
-      "problemMatcher": ["$tsc"]
+      "problemMatcher": [
+        "$tsc"
+      ]
     },
     {
       "label": "Compile",
       "type": "shell",
       "command": "pnpm",
-      "args": ["run", "compile"],
+      "args": [
+        "run",
+        "compile"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": ["$tsc"]
+      "problemMatcher": [
+        "$tsc"
+      ]
     },
     {
       "label": "Package",
       "type": "shell",
       "command": "pnpm",
-      "args": ["run", "package"],
+      "args": [
+        "run",
+        "package"
+      ],
       "group": "build",
-      "problemMatcher": ["$tsc"]
+      "problemMatcher": [
+        "$tsc"
+      ]
     },
     {
       "label": "VSIX",
       "type": "shell",
       "command": "pnpm",
-      "args": ["run", "vsix"],
+      "args": [
+        "run",
+        "vsix"
+      ],
       "group": "build",
-      "problemMatcher": ["$tsc"]
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "label": "Check media",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "check:media"
+      ],
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }
