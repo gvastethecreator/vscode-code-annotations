@@ -1,14 +1,16 @@
 <div align="center">
-  <a href="https://github.com/gvastethecreator/vscode-code-annotations"><img src="media/icon.png" alt="Code Annotations icon" width="128" /></a>
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations"><img src="media/icon.png" alt="Code Annotations icon" width="256" /></a>
 
 # Code Annotations: TODO Index
 
 **Find, highlight, and navigate comment markers without leaving VS Code.**
 
 <p align="center">
-  <a href="https://github.com/gvastethecreator/vscode-code-annotations"><img alt="GitHub" src="https://shieldcn.dev/badge/github.png?variant=outline&size=xs&theme=blue&logo=github" /></a>
-  <a href="LICENSE"><img alt="MIT license" src="https://shieldcn.dev/github/license/gvastethecreator/vscode-code-annotations.png?variant=outline&size=xs" /></a>
-  <a href="https://github.com/gvastethecreator/vscode-code-annotations/actions/workflows/ci.yml"><img alt="CI status" src="https://shieldcn.dev/github/ci/gvastethecreator/vscode-code-annotations.png?workflow=ci.yml&branch=main&variant=outline&size=xs" /></a>
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations/releases"><img alt="Release" src="https://shieldcn.dev/github/gvastethecreator/vscode-code-annotations/release.png?size=xs&color=111111" /></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=gvastethecreator.code-annotations"><img alt="VS Code Marketplace" src="https://shieldcn.dev/badge/vscode-marketplace-abcde3.png?size=xs&logo=ri%3ATbBrandVscode&color=111111" /></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://shieldcn.dev/github/license/gvastethecreator/vscode-code-annotations.png?variant=secondary&color=111111&size=xs" /></a>
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations"><img alt="GitHub" src="https://shieldcn.dev/badge/github-111.png?size=xs&logo=github" /></a>
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations/actions/workflows/ci.yml"><img alt="CI status" src="https://shieldcn.dev/github/ci/gvastethecreator/vscode-code-annotations.png?workflow=ci.yml&branch=main&variant=secondary&color=111111&size=xs" /></a>
 </p>
 </div>
 
@@ -33,7 +35,8 @@ More details: [product contract](docs/PDR.md) · [index design](docs/adr/0001-co
 ---
 
 <p align="center">
-  <a href="https://github.com/gvastethecreator/vscode-code-annotations/stargazers"><img alt="GitHub stars" src="https://shieldcn.dev/github/stars/gvastethecreator/vscode-code-annotations.png?variant=outline&size=xs" /></a>
-  <a href="https://github.com/gvastethecreator"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/follow%20me-/gvastethecreator.png?size=xs&amp;logo=github&amp;brand=github&amp;mode=dark"><img alt="Follow gvastethecreator" src="https://shieldcn.dev/badge/follow%20me-/gvastethecreator.png?size=xs&amp;logo=github&amp;brand=github&amp;mode=light"></picture></a>
-  <a href="https://github.com/sponsors/gvastethecreator"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/support%20this-project.png?size=xs&amp;logo=ri%3APiHeartFill&amp;logoColor=b85a90&amp;brand=github&amp;mode=dark"><img alt="Support this project" src="https://shieldcn.dev/badge/support%20this-project.png?size=xs&amp;logo=ri%3APiHeartFill&amp;logoColor=b85a90&amp;brand=github&amp;mode=light"></picture></a>
+  <a href="https://github.com/sponsors/gvastethecreator"><img src="https://shieldcn.dev/badge/support%20this-project.png?size=xs&amp;logo=ri%3APiHeartFill&amp;logoColor=b85a90&amp;brand=github&amp;mode=dark&color=111111"></a>
+  <a href="https://github.com/gvastethecreator/vscode-code-annotations/stargazers"><img alt="GitHub stars" src="https://shieldcn.dev/github/stars/gvastethecreator/vscode-code-annotations.png?variant=secondary&color=111111&size=xs" /></a>
+  <a href="https://github.com/gvastethecreator"><img src="https://shieldcn.dev/badge/follow%20me-/gvastethecreator.png?size=xs&amp;logo=github&amp;brand=github&amp;mode=dark&color=111111"></a>
+  <a href="https://x.com/gvastebb"><img src="https://shieldcn.dev/x/follow/gvastebb.png?size=xs&color=111111&mode=dark"></a>
 </p>

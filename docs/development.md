@@ -38,6 +38,6 @@ The workspace scan is deliberately lazy. Opening a supported document can activa
 
 ## Media
 
-`media/source/code-annotations-imagegen-raw.png` retains native-alpha Imagegen output `exec-12dd39bd-9a31-4b26-b1d3-fed1e5d2780c`, extracted from shadowed vector composition `exec-caf45c0e-5902-466f-af26-4dc2235b54d6`. `media/source/code-annotations-imagegen.png` is the accepted raster normalized to a thin transparent safety margin. Do not redraw it as SVG. `media/icon.png` must remain an alpha-preserving resize of those exact pixels. `media/preview.png` must be captured from the final installed VSIX, not composed as a mockup.
+`media/source/code-annotations-imagegen-raw.png` retains isolated code-line composition `exec-b76b4a5d-5733-4d7d-bb58-cb7bdf41c924`. Native-alpha extraction `exec-fabd5197-955b-49ad-beec-ba222b620b68` produced `media/source/code-annotations-imagegen.png`, the accepted raster normalized to a thin transparent safety margin. It uses five open code lines and one integrated annotation marker without an editor or browser tile. Do not redraw it as SVG. `media/icon.png` must remain an alpha-preserving resize of those exact pixels. `media/preview.png` must be captured from the final installed VSIX, not composed as a mockup.
 
-SHA-256: raw `3933E0606FBB9E37038B2E0C809BAAF5570BA2C5D6D275D794B0A06660275F39`; accepted `FC911C9FC24AE7AF31CFCDF6CA4C2F3FF817177BF54734644F0B8B22E3D28EA0`; production `F29D36643E8BE7518FAA01F544B5ADC73625A64DEE4012546AB7A0D88E13CD35`.
+SHA-256: raw `6A88216FE9C9CCFC5405AE6DDA9C0EA4BE5F910FC6D31C524AE2B15C79A726CA`; accepted `FDF9CF03B333B83C4F7EBF9B6904852ED6000CCFFC240374F6EF5395319429B5`; production `6DE8D652A8556A31206961190CCABA12675E0A774D5FC37A5B9B8A8919E076CC`.

@@ -24,6 +24,41 @@ export interface RuntimeConfiguration {
   readonly maxMessageLength: number;
 }
 
+const SETTING_KEYS = [
+  "enabled",
+  "tokens",
+  "caseSensitive",
+  "decorations.enabled",
+  "scan.include",
+  "scan.exclude",
+  "scan.maxFileSize",
+  "scan.maxFiles",
+  "scan.maxResults",
+] as const;
+
+export async function setDefaultSettings(): Promise<void> {
+  const confirm = "Set defaults";
+  const choice = await vscode.window.showWarningMessage(
+    "Set Code Annotations defaults for all workspaces?",
+    { modal: true },
+    confirm,
+  );
+  if (choice !== confirm) {
+    return;
+  }
+  const source = vscode.workspace.getConfiguration("codeAnnotations");
+  const targets: vscode.ConfigurationTarget[] = [vscode.ConfigurationTarget.Global];
+  if (vscode.workspace.workspaceFile || vscode.workspace.workspaceFolders?.length) {
+    targets.push(vscode.ConfigurationTarget.Workspace);
+  }
+  for (const key of SETTING_KEYS) {
+    const value = source.inspect(key)?.defaultValue;
+    for (const target of targets) {
+      await source.update(key, value, target);
+    }
+  }
+}
+
 export function readConfiguration(): RuntimeConfiguration {
   const source = vscode.workspace.getConfiguration("codeAnnotations");
   const caseSensitive = source.get<boolean>("caseSensitive", true);

@@ -1,0 +1,142 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: Registry to publish after verification
+        type: choice
+        options:
+          - artifact-only
+          - github-release
+          - vscode-marketplace
+          - open-vsx
+        default: artifact-only
+
+permissions:
+  contents: read
+
+concurrency:
+  group: code-annotations-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Verify release artifact
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      title: ${{ steps.meta.outputs.title }}
+      vsix: ${{ steps.meta.outputs.vsix }}
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run quality
+      - run: pnpm run package
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run test:web
+      - run: pnpm run vsix
+      - run: pnpm run inspect:vsix
+      - run: xvfb-run -a pnpm run test:vsix
+      - name: Record release metadata
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "require('./package.json').version")"
+          TITLE="$(node -p "require('./package.json').displayName")"
+          mapfile -t VSIX_FILES < <(ls -1 *.vsix)
+          if [ "${#VSIX_FILES[@]}" -ne 1 ]; then
+            echo "Expected exactly one VSIX."
+            ls -la *.vsix || true
+            exit 1
+          fi
+          VSIX="${VSIX_FILES[0]}"
+          sha256sum "$VSIX" > "$VSIX.sha256"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          echo "vsix=$VSIX" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: code-annotations-vsix
+          path: |
+            *.vsix
+            *.vsix.sha256
+          if-no-files-found: error
+          retention-days: 90
+
+  github-release:
+    name: GitHub Release
+    needs: prepare
+    if: ${{ inputs.registry == 'github-release' }}
+    runs-on: ubuntu-latest
+    environment: github-release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: code-annotations-vsix
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ needs.prepare.outputs.tag }}"
+          VSIX="${{ needs.prepare.outputs.vsix }}"
+          TITLE="${{ needs.prepare.outputs.title }}"
+          VERSION="${{ needs.prepare.outputs.version }}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists. Do not rewrite a public tag."
+            exit 1
+          fi
+          gh release create "$TAG" "$VSIX" "$VSIX.sha256" --title "$TITLE $VERSION" --generate-notes
+
+  marketplace:
+    name: Publish VS Code Marketplace
+    needs: prepare
+    if: ${{ inputs.registry == 'vscode-marketplace' }}
+    runs-on: ubuntu-latest
+    environment: vscode-marketplace
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v7
+        with:
+          name: code-annotations-vsix
+      - run: pnpm exec vsce publish --packagePath "${{ needs.prepare.outputs.vsix }}"
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+  open-vsx:
+    name: Publish Open VSX
+    needs: prepare
+    if: ${{ inputs.registry == 'open-vsx' }}
+    runs-on: ubuntu-latest
+    environment: open-vsx
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v7
+        with:
+          name: code-annotations-vsix
+      - run: pnpm exec ovsx publish "${{ needs.prepare.outputs.vsix }}" --pat "$OVSX_PAT"
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}

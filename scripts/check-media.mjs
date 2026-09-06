@@ -70,7 +70,7 @@ async function verifyAlphaBounds(filename, label) {
   const heightRatio = (bottom - top + 1) / info.height;
   const primaryRatio = Math.max(widthRatio, heightRatio);
   const secondaryRatio = Math.min(widthRatio, heightRatio);
-  assert.ok(primaryRatio >= 0.95 && primaryRatio <= 0.99, `${label} primary axis must occupy 95-99% of the canvas; got ${(primaryRatio * 100).toFixed(1)}%.`);
+  assert.ok(primaryRatio >= 0.80 && primaryRatio <= 0.90, `${label} primary axis must occupy 80-90% of the canvas; got ${(primaryRatio * 100).toFixed(1)}%.`);
   assert.ok(secondaryRatio >= 0.58, `${label} secondary axis contains excess padding; got ${(secondaryRatio * 100).toFixed(1)}%.`);
 }
 

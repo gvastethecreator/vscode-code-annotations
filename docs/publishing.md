@@ -8,6 +8,8 @@ An existing Marketplace extension already uses the exact display name **Code Ann
 
 Publishing is a separate operator action. Do not publish, create a release, tag, or delete a branch as part of normal implementation.
 
+The **Release** workflow starts from **Actions → Release → Run workflow**. Default input `artifact-only` does not publish.
+
 ## Candidate gate
 
 1. Run `pnpm install --frozen-lockfile` on the candidate commit.
@@ -20,4 +22,26 @@ Publishing is a separate operator action. Do not publish, create a release, tag,
 8. Review README, changelog, icon, preview, licensing notices, version, and package hash.
 9. Obtain explicit human approval for Marketplace/Open VSX upload.
 
-The CI **Release candidate** workflow performs the reproducible automated subset and uploads the exact VSIX artifact without publishing it.
+## GitHub Actions
+
+1. Run **Release** with `artifact-only` from `main`.
+2. After approval, run one of `github-release`, `vscode-marketplace`, or `open-vsx`.
+3. Run one registry at a time.
+
+Environments `github-release`, `vscode-marketplace`, and `open-vsx` accept `main` only. Do not store `VSCE_PAT` or `OVSX_PAT` until the owner asks to publish.
+
+## Manual fallback
+
+Marketplace: upload the exact verified VSIX at [Marketplace management](https://marketplace.visualstudio.com/manage).
+
+Open VSX:
+
+```powershell
+pnpm exec ovsx publish .\code-annotations.vsix -p $env:OVSX_PAT
+```
+
+Never place a PAT in a command, an issue, a log, or a document.
+
+## Rollback
+
+Prefer a forward patch. Do not rewrite a public tag or replace bytes under an existing version.

@@ -114,6 +114,11 @@
         "command": "codeAnnotations.previous",
         "title": "Previous Annotation",
         "category": "Code Annotations"
+      },
+      {
+        "command": "codeAnnotations.setDefaults",
+        "title": "Set Defaults",
+        "category": "Code Annotations"
       }
     ],
     "configuration": {
@@ -127,7 +132,14 @@
         },
         "codeAnnotations.tokens": {
           "type": "array",
-          "default": ["TODO", "FIXME", "HACK", "NOTE", "REVIEW", "DEPRECATED"],
+          "default": [
+            "TODO",
+            "FIXME",
+            "HACK",
+            "NOTE",
+            "REVIEW",
+            "DEPRECATED"
+          ],
           "scope": "window",
           "description": "Literal, whitespace-free comment markers to find.",
           "maxItems": 32,
@@ -153,7 +165,9 @@
         },
         "codeAnnotations.scan.include": {
           "type": "array",
-          "default": ["**/*"],
+          "default": [
+            "**/*"
+          ],
           "scope": "window",
           "description": "Glob patterns included in the workspace index.",
           "maxItems": 32,
@@ -262,32 +276,62 @@
       {
         "id": "codeAnnotations.infoForeground",
         "description": "Code Annotations informational token foreground.",
-        "defaults": { "dark": "#75BEFF", "light": "#005FB8", "highContrast": "#75BEFF", "highContrastLight": "#005FB8" }
+        "defaults": {
+          "dark": "#75BEFF",
+          "light": "#005FB8",
+          "highContrast": "#75BEFF",
+          "highContrastLight": "#005FB8"
+        }
       },
       {
         "id": "codeAnnotations.mutedForeground",
         "description": "Code Annotations muted token foreground.",
-        "defaults": { "dark": "#A7A7A7", "light": "#5C5C5C", "highContrast": "#FFFFFF", "highContrastLight": "#000000" }
+        "defaults": {
+          "dark": "#A7A7A7",
+          "light": "#5C5C5C",
+          "highContrast": "#FFFFFF",
+          "highContrastLight": "#000000"
+        }
       },
       {
         "id": "codeAnnotations.reviewForeground",
         "description": "Code Annotations review token foreground.",
-        "defaults": { "dark": "#C586C0", "light": "#7A3E9D", "highContrast": "#D9A7E8", "highContrastLight": "#5A1A73" }
+        "defaults": {
+          "dark": "#C586C0",
+          "light": "#7A3E9D",
+          "highContrast": "#D9A7E8",
+          "highContrastLight": "#5A1A73"
+        }
       },
       {
         "id": "codeAnnotations.warningForeground",
         "description": "Code Annotations warning token foreground.",
-        "defaults": { "dark": "#CCA700", "light": "#8A5A00", "highContrast": "#FFD700", "highContrastLight": "#6B4500" }
+        "defaults": {
+          "dark": "#CCA700",
+          "light": "#8A5A00",
+          "highContrast": "#FFD700",
+          "highContrastLight": "#6B4500"
+        }
       },
       {
         "id": "codeAnnotations.errorForeground",
         "description": "Code Annotations error token foreground.",
-        "defaults": { "dark": "#F14C4C", "light": "#A31515", "highContrast": "#FF8080", "highContrastLight": "#7A0000" }
+        "defaults": {
+          "dark": "#F14C4C",
+          "light": "#A31515",
+          "highContrast": "#FF8080",
+          "highContrastLight": "#7A0000"
+        }
       },
       {
         "id": "codeAnnotations.deprecatedForeground",
         "description": "Code Annotations deprecated token foreground.",
-        "defaults": { "dark": "#D19A66", "light": "#8B4513", "highContrast": "#FFD2A6", "highContrastLight": "#6A2C00" }
+        "defaults": {
+          "dark": "#D19A66",
+          "light": "#8B4513",
+          "highContrast": "#FFD2A6",
+          "highContrastLight": "#6A2C00"
+        }
       }
     ]
   },
@@ -321,6 +365,7 @@
     "@vscode/test-web": "0.0.81",
     "@vscode/vsce": "^3.9.2",
     "esbuild": "^0.28.2",
+    "ovsx": "1.1.1",
     "playwright": "1.62.1",
     "sharp": "^0.35.4",
     "typescript": "^7.0.2",

@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { COMMANDS } from "./commands.ts";
-import { readConfiguration, type RuntimeConfiguration } from "./configuration.ts";
+import { readConfiguration, setDefaultSettings, type RuntimeConfiguration } from "./configuration.ts";
 import { AnnotationIndex } from "./core/index.ts";
 import type { Annotation } from "./core/model.ts";
 import { AnnotationDecorations } from "./editor/decorations.ts";
@@ -158,6 +158,7 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand(COMMANDS.next, () => navigate("next")),
     vscode.commands.registerCommand(COMMANDS.previous, () => navigate("previous")),
     vscode.commands.registerCommand(COMMANDS.openAnnotation, (id: unknown) => openAnnotation(id)),
+    vscode.commands.registerCommand(COMMANDS.setDefaults, () => setDefaultSettings()),
   );
 
   void vscode.commands.executeCommand("setContext", "codeAnnotations.enabled", configuration.enabled);

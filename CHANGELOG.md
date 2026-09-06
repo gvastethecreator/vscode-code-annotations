@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 — Unreleased
+
+- Added a Set Defaults command that writes factory settings to user and workspace scope.
+
 ## 0.1.0 — 2026-09-02
 
 - Added comment-aware decorations for six built-in markers and validated literal custom tokens.
