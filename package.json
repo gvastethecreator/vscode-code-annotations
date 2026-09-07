@@ -117,7 +117,27 @@
       },
       {
         "command": "codeAnnotations.setDefaults",
-        "title": "Set Defaults",
+        "title": "Apply Factory Defaults...",
+        "category": "Code Annotations"
+      },
+      {
+        "command": "codeAnnotations.resetSettings",
+        "title": "Reset to Inherited Settings...",
+        "category": "Code Annotations"
+      },
+      {
+        "command": "codeAnnotations.groupBy",
+        "title": "Group By...",
+        "category": "Code Annotations"
+      },
+      {
+        "command": "codeAnnotations.viewScope",
+        "title": "Choose View Scope...",
+        "category": "Code Annotations"
+      },
+      {
+        "command": "codeAnnotations.exportFiltered",
+        "title": "Export Filtered Results",
         "category": "Code Annotations"
       }
     ],
@@ -269,6 +289,21 @@
           "command": "codeAnnotations.clearFilter",
           "when": "view == codeAnnotations.workspace && codeAnnotations.hasFilter",
           "group": "navigation@3"
+        },
+        {
+          "command": "codeAnnotations.groupBy",
+          "when": "view == codeAnnotations.workspace",
+          "group": "2_view@1"
+        },
+        {
+          "command": "codeAnnotations.viewScope",
+          "when": "view == codeAnnotations.workspace",
+          "group": "2_view@2"
+        },
+        {
+          "command": "codeAnnotations.exportFiltered",
+          "when": "view == codeAnnotations.workspace",
+          "group": "2_view@3"
         }
       ]
     },

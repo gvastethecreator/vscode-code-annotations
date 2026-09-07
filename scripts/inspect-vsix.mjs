@@ -41,18 +41,20 @@ assert.equal(manifest.browser, "./dist/web/extension.cjs");
 assert.deepEqual(manifest.extensionKind, ["workspace", "ui"]);
 assert.equal(manifest.capabilities.untrustedWorkspaces.supported, true);
 assert.equal(manifest.capabilities.virtualWorkspaces.supported, true);
-assert.equal(manifest.contributes.commands.length, 6);
-assert.deepEqual(
-  manifest.contributes.commands.map((entry) => entry.command),
-  [
-    "codeAnnotations.refreshWorkspace",
-    "codeAnnotations.showAll",
-    "codeAnnotations.filterTokens",
-    "codeAnnotations.clearFilter",
-    "codeAnnotations.next",
-    "codeAnnotations.previous",
-  ],
-);
+assert.deepEqual(manifest.contributes.commands.map((entry) => entry.command), [
+  "codeAnnotations.refreshWorkspace",
+  "codeAnnotations.showAll",
+  "codeAnnotations.filterTokens",
+  "codeAnnotations.clearFilter",
+  "codeAnnotations.next",
+  "codeAnnotations.previous",
+  "codeAnnotations.setDefaults",
+  "codeAnnotations.resetSettings",
+  "codeAnnotations.groupBy",
+  "codeAnnotations.viewScope",
+  "codeAnnotations.exportFiltered"
+]);
+
 assert.equal(Object.keys(manifest.contributes.configuration.properties).length, 9);
 assert.ok(
   Object.values(manifest.contributes.configuration.properties).every((entry) => entry.scope === "window"),

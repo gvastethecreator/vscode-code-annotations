@@ -40,7 +40,7 @@ if (process.platform === "linux") {
 }
 
 try {
-  await runTests({
+  await runTests({ extensionTestsEnv: { VSIX_SMOKE: "1" },
     extensionDevelopmentPath: path.join(root, "test", "runner"),
     extensionTestsPath: path.join(root, "test", "integration", "suite", "index.cjs"),
     launchArgs,

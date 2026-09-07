@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { COMMANDS } from "./commands.ts";
-import { readConfiguration, setDefaultSettings, type RuntimeConfiguration } from "./configuration.ts";
+import { readConfiguration, setDefaultSettings, resetSettings, type RuntimeConfiguration } from "./configuration.ts";
 import { AnnotationIndex } from "./core/index.ts";
 import type { Annotation } from "./core/model.ts";
 import { AnnotationDecorations } from "./editor/decorations.ts";
@@ -95,8 +95,10 @@ export function activate(context: vscode.ExtensionContext): void {
 
   context.subscriptions.push(
     tree,
+    provider,
     coordinator,
     decorations,
+    vscode.window.onDidChangeActiveTextEditor((editor) => provider.activeEditorChanged(editor)),
     tree.onDidChangeVisibility((event) => {
       if (event.visible && configuration.enabled) void coordinator.ensureStarted();
     }),
@@ -144,7 +146,8 @@ export function activate(context: vscode.ExtensionContext): void {
       }
       const items = configuration.tokens.map((entry) => ({
         label: entry.token,
-        picked: provider.filter ? provider.filter.has(entry.token.toLowerCase()) : true,
+        comparison: entry.comparison,
+        picked: provider.filter ? provider.filter.has(entry.comparison) : true,
       }));
       const selected = await vscode.window.showQuickPick(items, {
         canPickMany: true,
@@ -152,12 +155,32 @@ export function activate(context: vscode.ExtensionContext): void {
         placeHolder: "Choose tokens to show",
       });
       if (!selected) return;
-      provider.setFilter(new Set(selected.map((item) => item.label.toLowerCase())));
+      provider.setFilter(new Set(selected.map((item) => item.comparison)));
+    }),
+    vscode.commands.registerCommand("codeAnnotations.groupBy", async () => {
+      const choice = await vscode.window.showQuickPick([
+        { label: "File", value: "file" as const }, { label: "Token", value: "token" as const },
+      ], { title: "Group Code Annotations" });
+      if (choice) provider.setGrouping(choice.value);
+    }),
+    vscode.commands.registerCommand("codeAnnotations.viewScope", async () => {
+      const choice = await vscode.window.showQuickPick([
+        { label: "Workspace", activeOnly: false }, { label: "Active File", activeOnly: true },
+      ], { title: "Code Annotations Scope" });
+      if (choice) provider.setActiveFileOnly(choice.activeOnly);
+    }),
+    vscode.commands.registerCommand("codeAnnotations.exportFiltered", async () => {
+      if (!await requireEnabled()) return;
+      await coordinator.ensureStarted();
+      const content = provider.exportText();
+      const document = await vscode.workspace.openTextDocument({ content, language: "json" });
+      await vscode.window.showTextDocument(document, { preview: false });
     }),
     vscode.commands.registerCommand(COMMANDS.clearFilter, () => provider.clearFilter()),
     vscode.commands.registerCommand(COMMANDS.next, () => navigate("next")),
     vscode.commands.registerCommand(COMMANDS.previous, () => navigate("previous")),
     vscode.commands.registerCommand(COMMANDS.openAnnotation, (id: unknown) => openAnnotation(id)),
+    vscode.commands.registerCommand(COMMANDS.resetSettings, () => resetSettings()),
     vscode.commands.registerCommand(COMMANDS.setDefaults, () => setDefaultSettings()),
   );
 

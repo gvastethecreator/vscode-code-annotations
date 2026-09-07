@@ -1,3 +1,4 @@
+import { changeSettings } from "./settingsActions.ts";
 import * as vscode from "vscode";
 import {
   CONFIGURATION_DEFAULTS,
@@ -37,26 +38,11 @@ const SETTING_KEYS = [
 ] as const;
 
 export async function setDefaultSettings(): Promise<void> {
-  const confirm = "Set defaults";
-  const choice = await vscode.window.showWarningMessage(
-    "Set Code Annotations defaults for all workspaces?",
-    { modal: true },
-    confirm,
-  );
-  if (choice !== confirm) {
-    return;
-  }
-  const source = vscode.workspace.getConfiguration("codeAnnotations");
-  const targets: vscode.ConfigurationTarget[] = [vscode.ConfigurationTarget.Global];
-  if (vscode.workspace.workspaceFile || vscode.workspace.workspaceFolders?.length) {
-    targets.push(vscode.ConfigurationTarget.Workspace);
-  }
-  for (const key of SETTING_KEYS) {
-    const value = source.inspect(key)?.defaultValue;
-    for (const target of targets) {
-      await source.update(key, value, target);
-    }
-  }
+  await changeSettings("codeAnnotations", "Code Annotations", SETTING_KEYS, "defaults", false);
+}
+
+export async function resetSettings(): Promise<void> {
+  await changeSettings("codeAnnotations", "Code Annotations", SETTING_KEYS, "inherit", false);
 }
 
 export function readConfiguration(): RuntimeConfiguration {

@@ -49,17 +49,17 @@ export class AnnotationIndex {
     this.#status = { ...this.#status, partialReasons: [...this.#status.partialReasons, reason] };
   }
 
-  groups(filter?: ReadonlySet<string>): readonly AnnotationGroup[] {
+  groups(filter?: ReadonlySet<string>, caseSensitive = true): readonly AnnotationGroup[] {
     const groups: AnnotationGroup[] = [];
     for (const file of this.#files.values()) {
-      const annotations = file.annotations.filter((annotation) => !filter || filter.has(annotation.token.toLowerCase()));
+      const annotations = file.annotations.filter((annotation) => !filter || filter.has(caseSensitive ? annotation.token : annotation.token.toLowerCase()));
       if (annotations.length > 0) groups.push({ uri: file.uri, annotations });
     }
     return groups.sort((left, right) => compareOrdinal(left.uri, right.uri));
   }
 
-  all(filter?: ReadonlySet<string>): readonly Annotation[] {
-    return this.groups(filter).flatMap((group) => group.annotations);
+  all(filter?: ReadonlySet<string>, caseSensitive = true): readonly Annotation[] {
+    return this.groups(filter, caseSensitive).flatMap((group) => group.annotations);
   }
 
   findById(id: string): Annotation | undefined {

@@ -111,8 +111,28 @@ Automated gates cover Linux minimum/Stable/Insiders desktop hosts, Windows and m
 - regex tokens;
 - custom settings webview;
 - universal parsing of every embedded language;
-- export or persistence of the index.
+- automatic persistence of the index.
 
 ## Release gate
 
 Unit, type, build, performance, media, desktop, web, VSIX inspection, and installed-package checks must pass on the candidate bytes. Marketplace/Open VSX publication, release creation, tagging, and post-publication verification require explicit human authorization.
+
+## Accepted PR implementation
+
+Token filters respect caseSensitive, so TODO and todo can be selected independently. Selecting no tokens shows no results. The view can group by file or token, and can show the workspace or only the active file. Tree entries, next/previous navigation and Export Filtered Results use the same filtered index projection. Export opens an unsaved JSON document containing the selected results and partial-scan status for review and Save As. It does not run an additional scanner or persist the index automatically. Grouping and scope are session state.
+
+The two settings actions first ask for one scope. Apply Factory Defaults writes manifest defaults only in that scope. Reset to Inherited Settings removes explicit values only there. Both preserve language overrides and settings in other scopes. User and Workspace are available; Folder is available only for resource settings in a workspace file. Cancelling either picker or confirmation makes no change. A failed write reports how many keys changed; it does not claim an atomic settings transaction.
+
+Command identifiers:
+
+- `codeAnnotations.refreshWorkspace`: Refresh Workspace
+- `codeAnnotations.showAll`: Show All
+- `codeAnnotations.filterTokens`: Filter Tokens...
+- `codeAnnotations.clearFilter`: Clear Filter
+- `codeAnnotations.next`: Next Annotation
+- `codeAnnotations.previous`: Previous Annotation
+- `codeAnnotations.setDefaults`: Apply Factory Defaults...
+- `codeAnnotations.resetSettings`: Reset to Inherited Settings...
+- `codeAnnotations.groupBy`: Group By...
+- `codeAnnotations.viewScope`: Choose View Scope...
+- `codeAnnotations.exportFiltered`: Export Filtered Results

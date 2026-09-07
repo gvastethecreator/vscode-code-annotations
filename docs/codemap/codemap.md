@@ -1,99 +1,121 @@
-# Code map · vscode-code-annotations
+# Code map: vscode-code-annotations
 
-generated: 2026-09-05T04:45:27Z
-commit: 15227074ac13
-scope: .
+Generated: 2026-09-07T03:20:48Z | Commit: `1020534ca8d7` | Schema: 2
+Generation: `43a7c2f1b4a4d52bf77d51a1f98a064a14927d2410d7e7f13e50af55309013df`
+Scope: . | Inventory: working-tree
+Nodes: 55 | Edges: 158 | Flows: 0
 
-counts: 10 nodes · 19 edges · 0 flows · 0 unknown
+## Coverage
+
+- Analysis: **partial**; 36 analyzed of 37 included files.
+- Configuration files: 1; omitted untracked files: 0.
+- Unresolved references and analysis limits: 205.
+- Static references and call paths do not prove runtime execution or test coverage.
 
 ## Modules
 
-- `esbuild` · `esbuild.cjs` · interface · Esbuild
-  callers: repository (calls)
-  callees: external-dependencies (imports)
-  tests: (none)
-  entry: esbuild.cjs:main
-
-- `external-dependencies` · `esbuild.cjs` · external · External
-  callers: esbuild (imports), scripts (imports), src (imports), src-editor (imports), src-views (imports), src-workspace (imports)
-  callees: (none)
-  tests: (none)
-  entry: esbuild.cjs:esbuild
-
-- `repository` · `package.json` · module · Repository
-  callers: (none)
-  callees: esbuild (calls), scripts (calls)
-  tests: (none)
-  entry: package.json:{
-
-- `scripts` · `scripts` · service · Scripts
-  callers: repository (calls)
-  callees: external-dependencies (imports), src-core (imports)
-  tests: (none)
-  entry: scripts/build-web-tests.mjs:root
-
-- `src` · `src` · module · Src
-  callers: src-editor (imports), src-views (imports), src-workspace (imports)
-  callees: external-dependencies (imports), src-core (imports), src-editor (imports), src-views (imports), src-workspace (imports)
-  tests: (none)
-  entry: src/commands.ts:COMMANDS
-
-- `src-core` · `src/core` · service · Src
-  callers: scripts (imports), src (imports), src-editor (imports), src-views (imports), src-workspace (imports)
-  callees: (none)
-  tests: src/core/config.test.ts, src/core/guards.test.ts, src/core/index.test.ts, src/core/matcher.test.ts
-  entry: src/core/index.ts:AnnotationIndex
-
-- `src-editor` · `src/editor` · module · Src
-  callers: src (imports)
-  callees: external-dependencies (imports), src (imports), src-core (imports)
-  tests: (none)
-  entry: src/editor/decorations.ts:AnnotationDecorations
-
-- `src-views` · `src/views` · module · Src
-  callers: src (imports)
-  callees: external-dependencies (imports), src (imports), src-core (imports)
-  tests: (none)
-  entry: src/views/annotationsTree.ts:AnnotationsTreeProvider
-
-- `src-workspace` · `src/workspace` · module · Src
-  callers: src (imports)
-  callees: external-dependencies (imports), src (imports), src-core (imports)
-  tests: (none)
-  entry: src/workspace/coordinator.ts:delay
-
-- `test-workspace-src` · `test-workspace/src` · module · Test Workspace
-  callers: (none)
-  callees: (none)
-  tests: (none)
-  entry: test-workspace/src/annotations.ts:queueJob
+- `esbuild.cjs` | module | Repository | callers: none | callees: external:javascript:esbuild, external:javascript:esbuild | tests: 0 | entry: none
+- `external:javascript:@vscode/test-electron` | external | External | callers: test/integration/download-vscode.mjs, test/integration/download-vscode.mjs, test/integration/run-vsix.mjs, test/integration/run-vsix.mjs | callees: none | tests: 3 | entry: none
+- `external:javascript:@vscode/test-web` | external | External | callers: test/web/run.mjs, test/web/run.mjs | callees: none | tests: 1 | entry: none
+- `external:javascript:esbuild` | external | External | callers: esbuild.cjs, esbuild.cjs, scripts/build-web-tests.mjs, scripts/build-web-tests.mjs | callees: none | tests: 0 | entry: none
+- `external:javascript:node:assert` | external | External | callers: scripts/check-media.mjs, scripts/inspect-vsix.mjs, scripts/performance.mjs, scripts/release-artifact.mjs | callees: none | tests: 5 | entry: none
+- `external:javascript:node:child_process` | external | External | callers: scripts/release-artifact.mjs, scripts/release-artifact.mjs, test/integration/run-vsix.mjs, test/integration/run-vsix.mjs | callees: none | tests: 1 | entry: none
+- `external:javascript:node:crypto` | external | External | callers: scripts/release-artifact.mjs, scripts/release-artifact.mjs | callees: none | tests: 0 | entry: none
+- `external:javascript:node:fs` | external | External | callers: scripts/check-media.mjs, scripts/check-media.mjs, scripts/inspect-vsix.mjs, scripts/inspect-vsix.mjs | callees: none | tests: 2 | entry: none
+- `external:javascript:node:os` | external | External | callers: test/integration/run-vsix.mjs, test/integration/run.mjs | callees: none | tests: 2 | entry: none
+- `external:javascript:node:path` | external | External | callers: scripts/build-web-tests.mjs, scripts/check-media.mjs, scripts/inspect-vsix.mjs, scripts/performance.mjs | callees: none | tests: 3 | entry: none
+- `external:javascript:node:perf_hooks` | external | External | callers: scripts/performance.mjs | callees: none | tests: 0 | entry: none
+- `external:javascript:node:test` | external | External | callers: src/core/config.test.ts, src/core/config.test.ts, src/core/guards.test.ts, src/core/guards.test.ts | callees: none | tests: 4 | entry: none
+- `external:javascript:node:timers` | external | External | callers: test/integration/download-vscode.mjs, test/integration/download-vscode.mjs | callees: none | tests: 1 | entry: none
+- `external:javascript:node:url` | external | External | callers: scripts/build-web-tests.mjs, scripts/build-web-tests.mjs, scripts/check-media.mjs, scripts/check-media.mjs | callees: none | tests: 3 | entry: none
+- `external:javascript:node:vm` | external | External | callers: scripts/performance.mjs | callees: none | tests: 0 | entry: none
+- `external:javascript:picomatch` | external | External | callers: src/workspace/coordinator.ts, src/workspace/coordinator.ts | callees: none | tests: 0 | entry: none
+- `external:javascript:sharp` | external | External | callers: scripts/check-media.mjs, scripts/check-media.mjs, scripts/inspect-vsix.mjs, scripts/inspect-vsix.mjs | callees: none | tests: 0 | entry: none
+- `external:javascript:vscode` | external | External | callers: src/configuration.ts, src/editor/decorations.ts, src/extension.ts, src/settingsActions.ts | callees: none | tests: 2 | entry: none
+- `external:javascript:yauzl` | external | External | callers: scripts/inspect-vsix.mjs | callees: none | tests: 0 | entry: none
+- `package.json` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
+- Showing 20 of 55 nodes. Query `impact --module <path>` or open the HTML hierarchy for the rest.
 
 ## Edges
 
-- esbuild -> external-dependencies · imports
-- repository -> esbuild · calls
-- repository -> scripts · calls
-- scripts -> external-dependencies · imports
-- scripts -> src-core · imports
-- src -> external-dependencies · imports
-- src -> src-core · imports
-- src -> src-editor · imports
-- src -> src-views · imports
-- src -> src-workspace · imports
-- src-editor -> external-dependencies · imports
-- src-editor -> src · imports
-- src-editor -> src-core · imports
-- src-views -> external-dependencies · imports
-- src-views -> src · imports
-- src-views -> src-core · imports
-- src-workspace -> external-dependencies · imports
-- src-workspace -> src · imports
-- src-workspace -> src-core · imports
+- `esbuild.cjs` -> `external:javascript:esbuild` | calls
+- `esbuild.cjs` -> `external:javascript:esbuild` | imports
+- `scripts/build-web-tests.mjs` -> `external:javascript:esbuild` | calls
+- `scripts/build-web-tests.mjs` -> `external:javascript:esbuild` | imports
+- `scripts/build-web-tests.mjs` -> `external:javascript:node:path` | imports
+- `scripts/build-web-tests.mjs` -> `external:javascript:node:url` | calls
+- `scripts/build-web-tests.mjs` -> `external:javascript:node:url` | imports
+- `scripts/check-media.mjs` -> `external:javascript:node:assert` | imports
+- `scripts/check-media.mjs` -> `external:javascript:node:fs` | calls
+- `scripts/check-media.mjs` -> `external:javascript:node:fs` | imports
+- `scripts/check-media.mjs` -> `external:javascript:node:path` | imports
+- `scripts/check-media.mjs` -> `external:javascript:node:url` | calls
+- `scripts/check-media.mjs` -> `external:javascript:node:url` | imports
+- `scripts/check-media.mjs` -> `external:javascript:sharp` | calls
+- `scripts/check-media.mjs` -> `external:javascript:sharp` | imports
+- `scripts/inspect-vsix.mjs` -> `external:javascript:node:assert` | imports
+- `scripts/inspect-vsix.mjs` -> `external:javascript:node:fs` | calls
+- `scripts/inspect-vsix.mjs` -> `external:javascript:node:fs` | imports
+- `scripts/inspect-vsix.mjs` -> `external:javascript:node:path` | imports
+- `scripts/inspect-vsix.mjs` -> `external:javascript:node:url` | calls
+- `scripts/inspect-vsix.mjs` -> `external:javascript:node:url` | imports
+- `scripts/inspect-vsix.mjs` -> `external:javascript:sharp` | calls
+- `scripts/inspect-vsix.mjs` -> `external:javascript:sharp` | imports
+- `scripts/inspect-vsix.mjs` -> `external:javascript:yauzl` | imports
+- `scripts/performance.mjs` -> `external:javascript:node:assert` | imports
+- `scripts/performance.mjs` -> `external:javascript:node:fs` | calls
+- `scripts/performance.mjs` -> `external:javascript:node:fs` | imports
+- `scripts/performance.mjs` -> `external:javascript:node:path` | imports
+- `scripts/performance.mjs` -> `external:javascript:node:perf_hooks` | imports
+- `scripts/performance.mjs` -> `external:javascript:node:url` | calls
+- `scripts/performance.mjs` -> `external:javascript:node:url` | imports
+- `scripts/performance.mjs` -> `external:javascript:node:vm` | imports
+- `scripts/performance.mjs` -> `src/core/config.ts` | calls
+- `scripts/performance.mjs` -> `src/core/config.ts` | imports
+- `scripts/performance.mjs` -> `src/core/index.ts` | imports
+- `scripts/performance.mjs` -> `src/core/matcher.ts` | calls
+- `scripts/performance.mjs` -> `src/core/matcher.ts` | imports
+- `scripts/release-artifact.mjs` -> `external:javascript:node:assert` | imports
+- `scripts/release-artifact.mjs` -> `external:javascript:node:child_process` | calls
+- `scripts/release-artifact.mjs` -> `external:javascript:node:child_process` | imports
+- `scripts/release-artifact.mjs` -> `external:javascript:node:crypto` | calls
+- `scripts/release-artifact.mjs` -> `external:javascript:node:crypto` | imports
+- `scripts/release-artifact.mjs` -> `external:javascript:node:fs` | calls
+- `scripts/release-artifact.mjs` -> `external:javascript:node:fs` | imports
+- `scripts/render-media.mjs` -> `external:javascript:node:path` | imports
+- `scripts/render-media.mjs` -> `external:javascript:node:url` | calls
+- `scripts/render-media.mjs` -> `external:javascript:node:url` | imports
+- `scripts/render-media.mjs` -> `external:javascript:sharp` | calls
+- `scripts/render-media.mjs` -> `external:javascript:sharp` | imports
+- `src/configuration.ts` -> `external:javascript:vscode` | imports
+- Showing 50 of 158 edges; JSON contains every edge and its evidence.
 
 ## Unknown
 
-- none
+- `package.json:1`: unresolved-local-import (./dist/node/extension.cjs)
+- `scripts/build-web-tests.mjs:5`: object-member-call-not-resolved (path)
+- `scripts/build-web-tests.mjs:5`: object-member-call-not-resolved (path)
+- `scripts/build-web-tests.mjs:7`: object-member-call-not-resolved (path)
+- `scripts/build-web-tests.mjs:12`: object-member-call-not-resolved (path)
+- `scripts/check-media.mjs:7`: object-member-call-not-resolved (path)
+- `scripts/check-media.mjs:7`: object-member-call-not-resolved (path)
+- `scripts/check-media.mjs:8`: object-member-call-not-resolved (path)
+- `scripts/check-media.mjs:9`: object-member-call-not-resolved (path)
+- `scripts/check-media.mjs:15`: object-member-call-not-resolved (path)
+- `scripts/check-media.mjs:16`: object-member-call-not-resolved (assert)
+- `scripts/check-media.mjs:20`: object-member-call-not-resolved (path)
 
 ## Flows
 
-- none
+- no source-backed call path from a recognized trigger
+
+## Architecture changes
+
+- Nodes: +3 / -0; edges: +10 / -20.
+- Boundary changes: 0; new cycles: 0.
+
+## Read next
+
+- Use `status` before relying on this generation.
+- Use `impact --changed` for possible impact and related test evidence.
+- Use `diff --before <model> --after <model>` for architecture changes.

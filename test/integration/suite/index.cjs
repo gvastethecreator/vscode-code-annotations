@@ -70,7 +70,44 @@ async function run() {
   await vscode.workspace.fs.delete(openOnly);
   await configuration.update("decorations.enabled", true, vscode.ConfigurationTarget.Workspace);
 
-  console.log("Code Annotations desktop integration passed.");
+  // Prompt stubs affect only the development extension API instance. Installed
+  // smoke uses a separate runner extension; the full prompt cases run above that
+  // packaging layer in test:integration. Keep noninteractive installed checks.
+  if (process.env.VSIX_SMOKE !== "1") {
+  const caseUri = vscode.Uri.joinPath(folder.uri, "src", "case-filter.ts");
+  await vscode.workspace.fs.writeFile(caseUri, new TextEncoder().encode("// TODO upper\n// todo lower\n"));
+  await configuration.update("tokens", ["TODO", "todo"], vscode.ConfigurationTarget.Workspace);
+  await delay(400);
+  await vscode.commands.executeCommand("codeAnnotations.refreshWorkspace");
+  const caseDocument = await vscode.workspace.openTextDocument(caseUri);
+  await vscode.window.showTextDocument(caseDocument);
+  const originalPick = vscode.window.showQuickPick;
+  try {
+    vscode.window.showQuickPick = async (items) => items.find((item) => item.activeOnly === true);
+    await vscode.commands.executeCommand("codeAnnotations.viewScope");
+    vscode.window.showQuickPick = async (items) => items.find((item) => item.value === "token");
+    await vscode.commands.executeCommand("codeAnnotations.groupBy");
+    vscode.window.showQuickPick = async (items) => items.filter((item) => item.label === "todo");
+    await vscode.commands.executeCommand("codeAnnotations.filterTokens");
+    await vscode.commands.executeCommand("codeAnnotations.exportFiltered");
+    const exported = JSON.parse(vscode.window.activeTextEditor.document.getText());
+    assert.equal(exported.scope, "active-file");
+    assert.equal(exported.status.scanned, true);
+    assert.ok(Array.isArray(exported.status.partialReasons));
+    assert.deepEqual(exported.annotations.map((annotation) => [annotation.uri, annotation.token, annotation.message]), [[caseUri.toString(), "todo", "lower"]]);
+    await vscode.window.showTextDocument(caseDocument);
+    await vscode.commands.executeCommand("codeAnnotations.next");
+    assertSelection("todo", "case-filter.ts");
+    vscode.window.showQuickPick = async () => [];
+    await vscode.commands.executeCommand("codeAnnotations.filterTokens");
+    await vscode.commands.executeCommand("codeAnnotations.exportFiltered");
+    assert.deepEqual(JSON.parse(vscode.window.activeTextEditor.document.getText()).annotations, []);
+  } finally {
+    vscode.window.showQuickPick = originalPick;
+    await configuration.update("tokens", undefined, vscode.ConfigurationTarget.Workspace);
+  }
+  }
+  console.log("Code Annotations desktop integration passed, including case-sensitive projections and export.");
 }
 
 function assertSelection(expected, suffix) {

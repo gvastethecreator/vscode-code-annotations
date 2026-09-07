@@ -40,3 +40,7 @@ More details: [product contract](docs/PDR.md) · [index design](docs/adr/0001-co
   <a href="https://github.com/gvastethecreator"><img src="https://shieldcn.dev/badge/follow%20me-/gvastethecreator.png?size=xs&amp;logo=github&amp;brand=github&amp;mode=dark&color=111111"></a>
   <a href="https://x.com/gvastebb"><img src="https://shieldcn.dev/x/follow/gvastebb.png?size=xs&color=111111&mode=dark"></a>
 </p>
+
+## Added controls
+
+Token filters respect caseSensitive, so TODO and todo can be selected independently. Selecting no tokens shows no results. The view can group by file or token, and can show the workspace or only the active file. Tree entries, next/previous navigation and Export Filtered Results use the same filtered index projection. Export opens an unsaved JSON document containing the selected results and partial-scan status for review and Save As. It does not run an additional scanner or persist the index automatically. Grouping and scope are session state.

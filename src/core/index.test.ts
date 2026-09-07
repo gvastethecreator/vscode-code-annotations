@@ -34,11 +34,25 @@ test("groups files and annotations in deterministic ordinal order", () => {
 test("filters tokens, resolves stable IDs, and removes files", () => {
   const index = new AnnotationIndex();
   index.replaceSnapshot([file("file:///a.ts", "// TODO a\n// FIXME b")], complete);
-  const todo = index.all(new Set(["todo"]));
+  const todo = index.all(new Set(["TODO"]));
   assert.equal(todo.length, 1);
   assert.equal(index.findById(todo[0]!.id)?.message, "a");
   index.removeFile("file:///a.ts");
   assert.equal(index.total, 0);
+});
+
+test("case-sensitive filters distinguish TODO and todo while an empty filter stays empty", () => {
+  const index = new AnnotationIndex();
+  const result = matchAnnotations("// TODO upper\n// todo lower", {
+    uri: "file:///case.ts", languageId: "typescript", source: "workspace-scan",
+    tokens: normalizeTokens(["TODO", "todo"], true).tokens, caseSensitive: true,
+    maxMessageLength: 500, maxResults: 100,
+  });
+  index.replaceSnapshot([{ uri: "file:///case.ts", source: "workspace-scan", ...result }], complete);
+  assert.deepEqual(index.all(new Set(["TODO"])).map((annotation) => annotation.message), ["upper"]);
+  assert.deepEqual(index.all(new Set(["todo"])).map((annotation) => annotation.message), ["lower"]);
+  assert.equal(index.all(new Set(["todo"]), false).length, 2);
+  assert.equal(index.all(new Set()).length, 0);
 });
 
 test("replaces one file atomically and records result truncation", () => {

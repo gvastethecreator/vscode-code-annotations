@@ -6,5 +6,6 @@ export const COMMANDS = {
   next: "codeAnnotations.next",
   previous: "codeAnnotations.previous",
   openAnnotation: "codeAnnotations.openAnnotation",
+  resetSettings: "codeAnnotations.resetSettings",
   setDefaults: "codeAnnotations.setDefaults",
 } as const;
