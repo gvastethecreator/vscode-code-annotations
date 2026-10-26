@@ -1,7 +1,7 @@
 # Code map: vscode-code-annotations
 
-Generated: 2026-10-26T05:28:19Z | Commit: `ecc1f8984fa0` | Schema: 2
-Generation: `6089333c9ad04776b471baaab89bb59767b8e95e4e159741df39e77bdb505c64`
+Generated: 2026-10-26T07:24:05Z | Commit: `96b602456046` | Schema: 2
+Generation: `29359e09fb417a16699ba64a92c40194bffdb807e1774a0345403278d1a142d2`
 Scope: . | Inventory: working-tree
 Nodes: 55 | Edges: 158 | Flows: 0
 
@@ -9,7 +9,7 @@ Nodes: 55 | Edges: 158 | Flows: 0
 
 - Analysis: **partial**; 36 analyzed of 37 included files.
 - Configuration files: 1; omitted untracked files: 0.
-- Unresolved references and analysis limits: 211.
+- Unresolved references and analysis limits: 212.
 - Static references and call paths do not prove runtime execution or test coverage.
 
 ## Modules

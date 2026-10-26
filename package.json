@@ -2,7 +2,7 @@
   "name": "code-annotations",
   "displayName": "Code Annotations: TODO Index",
   "description": "Highlight and navigate TODO, FIXME, HACK, NOTE, REVIEW, and custom comment markers.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "packageManager": "pnpm@12.15.0",
   "publisher": "gvastethecreator",
   "author": {

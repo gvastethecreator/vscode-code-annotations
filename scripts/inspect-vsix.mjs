@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdir, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -35,7 +35,7 @@ for (const name of names) {
 const manifest = JSON.parse(contents.get("extension/package.json").toString("utf8"));
 assert.equal(manifest.name, "code-annotations");
 assert.equal(manifest.displayName, "Code Annotations: TODO Index");
-assert.equal(manifest.version, "0.1.0");
+assert.equal(manifest.version, JSON.parse(await readFile(path.join(root, "package.json"), "utf8")).version);
 assert.equal(manifest.main, "./dist/node/extension.cjs");
 assert.equal(manifest.browser, "./dist/web/extension.cjs");
 assert.deepEqual(manifest.extensionKind, ["workspace", "ui"]);
