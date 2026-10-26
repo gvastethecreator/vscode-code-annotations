@@ -1,0 +1,149 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: Registry to publish after verification
+        type: choice
+        options:
+          - artifact-only
+          - github-release
+          - vscode-marketplace
+          - open-vsx
+        default: artifact-only
+
+permissions:
+  contents: read
+
+concurrency:
+  group: code-annotations-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Verify release artifact
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      title: ${{ steps.meta.outputs.title }}
+      vsix: ${{ steps.meta.outputs.vsix }}
+      tag: ${{ steps.meta.outputs.tag }}
+      source: ${{ steps.meta.outputs.source }}
+      sha256: ${{ steps.meta.outputs.sha256 }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run quality
+      - run: pnpm run package
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run test:web
+      - run: pnpm run vsix
+      - run: pnpm run inspect:vsix
+      - run: xvfb-run -a pnpm run test:vsix
+      - name: Record release metadata
+        id: meta
+        run: node scripts/release-artifact.mjs record
+      - uses: actions/upload-artifact@v7
+        with:
+          name: code-annotations-vsix
+          path: |
+            *.vsix
+            *.vsix.sha256
+            release-artifact.json
+          if-no-files-found: error
+          retention-days: 90
+
+  github-release:
+    name: GitHub Release
+    needs: prepare
+    if: ${{ inputs.registry == 'github-release' }}
+    runs-on: ubuntu-latest
+    environment: github-release
+    permissions:
+      contents: write
+    env:
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_SOURCE: ${{ needs.prepare.outputs.source }}
+      RELEASE_SHA256: ${{ needs.prepare.outputs.sha256 }}
+      RELEASE_VSIX: ${{ needs.prepare.outputs.vsix }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.source }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - uses: actions/download-artifact@v7
+        with:
+          name: code-annotations-vsix
+      - name: Verify artifact and create GitHub Release
+        run: node scripts/release-artifact.mjs publish-github
+
+  marketplace:
+    name: Publish VS Code Marketplace
+    needs: prepare
+    if: ${{ inputs.registry == 'vscode-marketplace' }}
+    runs-on: ubuntu-latest
+    environment: vscode-marketplace
+    env:
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_SOURCE: ${{ needs.prepare.outputs.source }}
+      RELEASE_SHA256: ${{ needs.prepare.outputs.sha256 }}
+      RELEASE_VSIX: ${{ needs.prepare.outputs.vsix }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.source }}
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v7
+        with:
+          name: code-annotations-vsix
+      - name: Verify artifact, source and tag
+        run: node scripts/release-artifact.mjs verify-remote
+      - run: pnpm exec vsce publish --packagePath "${{ needs.prepare.outputs.vsix }}"
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+  open-vsx:
+    name: Publish Open VSX
+    needs: prepare
+    if: ${{ inputs.registry == 'open-vsx' }}
+    runs-on: ubuntu-latest
+    environment: open-vsx
+    env:
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_SOURCE: ${{ needs.prepare.outputs.source }}
+      RELEASE_SHA256: ${{ needs.prepare.outputs.sha256 }}
+      RELEASE_VSIX: ${{ needs.prepare.outputs.vsix }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.source }}
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v7
+        with:
+          name: code-annotations-vsix
+      - name: Verify artifact, source and tag
+        run: node scripts/release-artifact.mjs verify-remote
+      - run: pnpm exec ovsx publish "${{ needs.prepare.outputs.vsix }}" --pat "$OVSX_PAT"
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
