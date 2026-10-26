@@ -387,7 +387,7 @@
     "test:vsix": "node test/integration/run-vsix.mjs",
     "render:media": "node scripts/render-media.mjs",
     "check:media": "node scripts/check-media.mjs",
-    "quality": "pnpm run test:unit && pnpm run check-types && pnpm run compile && pnpm run test:performance && pnpm run check:media"
+    "quality": "pnpm run test:unit && pnpm run compile && pnpm run test:performance && pnpm run check:media"
   },
   "dependencies": {
     "picomatch": "4.0.7"

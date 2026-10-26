@@ -114,6 +114,7 @@ export function activate(context: vscode.ExtensionContext): void {
       const wasDirty = dirtyDocuments.delete(key);
       coordinator.documentClosed(document.uri, wasDirty);
     }),
+    vscode.workspace.onDidChangeWorkspaceFolders(() => coordinator.configurationChanged()),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (!event.affectsConfiguration("codeAnnotations")) return;
       configuration = readConfiguration();

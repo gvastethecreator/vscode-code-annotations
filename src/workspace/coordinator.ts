@@ -54,7 +54,7 @@ export class WorkspaceCoordinator implements vscode.Disposable {
   #eventTimer: ReturnType<typeof setTimeout> | undefined;
   #firstPendingAt: number | undefined;
   #eventFlush: Promise<void> = Promise.resolve();
-  #watcher: vscode.FileSystemWatcher | undefined;
+  #watcher: vscode.Disposable | undefined;
   #scanCancellation: vscode.CancellationTokenSource | undefined;
   #activeScan: Promise<void> | undefined;
   #generation = 0;
@@ -93,6 +93,8 @@ export class WorkspaceCoordinator implements vscode.Disposable {
   }
 
   configurationChanged(): void {
+    this.#watcher?.dispose();
+    this.#watcher = undefined;
     this.compilePathMatchers();
     if (this.#started) void this.refresh();
   }
@@ -300,11 +302,14 @@ export class WorkspaceCoordinator implements vscode.Disposable {
 
   private ensureWatcher(): void {
     if (this.#watcher) return;
-    const watcher = vscode.workspace.createFileSystemWatcher("**/*");
-    watcher.onDidCreate((uri) => this.scheduleFileEvent(uri, "change"));
-    watcher.onDidChange((uri) => this.scheduleFileEvent(uri, "change"));
-    watcher.onDidDelete((uri) => this.scheduleFileEvent(uri, "delete"));
-    this.#watcher = watcher;
+    const watchers = (vscode.workspace.workspaceFolders ?? []).map((folder) => {
+      const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(folder, "**/*"));
+      watcher.onDidCreate((uri) => this.scheduleFileEvent(uri, "change"));
+      watcher.onDidChange((uri) => this.scheduleFileEvent(uri, "change"));
+      watcher.onDidDelete((uri) => this.scheduleFileEvent(uri, "delete"));
+      return watcher;
+    });
+    this.#watcher = vscode.Disposable.from(...watchers);
   }
 
   private scheduleFileEvent(uri: vscode.Uri, kind: "change" | "delete", debounce = FILE_EVENT_DEBOUNCE_MS): void {

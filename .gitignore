@@ -13,3 +13,7 @@ logs/
 .code-review-graph/
 .vscode/settings.json
 test-workspace/.vscode/
+docs/codemap/.staging/
+docs/codemap/.review/
+docs/codemap/.publication/
+docs/codemap/.publisher.lock

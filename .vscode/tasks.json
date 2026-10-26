@@ -31,17 +31,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Quality",
-      "type": "shell",
-      "command": "pnpm",
-      "args": [
-        "run",
-        "quality"
-      ],
-      "group": "test",
-      "problemMatcher": []
-    },
-    {
       "label": "Types",
       "type": "shell",
       "command": "pnpm",
@@ -82,6 +71,17 @@
       "problemMatcher": [
         "$tsc"
       ]
+    },
+    {
+      "label": "Quality",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "quality"
+      ],
+      "group": "test",
+      "problemMatcher": []
     },
     {
       "label": "VSIX",
